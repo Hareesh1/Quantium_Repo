@@ -1,164 +1,185 @@
-Soul Foods Pink Morsel Sales Dashboard
-A Dash Data Visualisation, Automated Testing, and Continuous Integration Project
+# Soul Foods Pink Morsel Sales Dashboard
 
-Project Overview
-This project delivers an interactive Dash web application that allows Soul Foods to analyse sales of Pink Morsels across different regions and over time. The primary business objective is to answer the question:
+## Overview
 
-“Were Pink Morsel sales higher before or after the price increase on January 15th, 2021?”
+This project provides an interactive Dash web application for exploring sales of Pink Morsels across different regions and dates. It also includes automated tests and a continuous integration workflow. The primary business goal is to determine whether Pink Morsel sales were higher before or after the price increase on January 15, 2021.
 
-Using the provided sales data, the project:
+The project includes:
 
-Extracts only "Pink Morsel" records.
+* Data cleaning and processing to generate a unified dataset
+* A Dash application with a styled interface
+* Region-based filtering using radio buttons
+* A line chart visualising sales over time
+* Automated testing with Pytest
+* A GitHub Actions workflow to run tests automatically
 
-Calculates total sales using Sales = Quantity × Price.
+---
 
-Produces a combined, cleaned CSV file.
+## Data Processing
 
-Displays sales trends in a line chart.
+The original dataset consists of three CSV files containing daily sales data.
+A preprocessing script was used to:
 
-Allows region-level filtering using a radio button.
+1. Filter the data to include only rows where the product is "pink morsel".
+2. Convert prices to numeric values.
+3. Compute the `Sales` field using `quantity × price`.
+4. Retain only the fields: `Sales`, `Date`, and `Region`.
 
-Highlights the price increase date for comparison.
+The cleaned and combined dataset is saved as:
 
-The project also incorporates:
-
-Automated testing with Pytest and Dash's testing utilities.
-
-A GitHub Actions continuous integration pipeline.
-
-A portable test runner script for CI engines.
-
-Data Processing
-The original dataset consists of three CSV files representing daily sales records. The preprocessing script:
-
-Filters rows for the product "pink morsel".
-
-Converts the price column to numeric values.
-
-Computes the total Sales column.
-
-Retains only the fields: Sales, Date, and Region.
-
-The cleaned dataset is written to:
-
-Plaintext
-
+```
 formatted_sales_data.csv
-Dash Application
-The application includes the following components:
+```
 
-1. Header
-A title describing the dashboard and its purpose.
+---
 
-2. Line Chart
-A time series plot of daily Pink Morsel sales, sorted by date.
+## Dash Application
 
-The chart includes a vertical dashed line representing the price increase on 15 January 2021.
+The Dash app displays an interactive dashboard that includes:
 
-3. Region Picker
-A radio button that allows filtering by:
+### Header
 
-all
+A clear title at the top of the page.
 
-north
+### Region Picker
 
-east
+A set of radio buttons that allow filtering by region:
 
-south
+```
+all, north, east, south, west
+```
 
-west
+### Line Chart
 
-4. Custom Styling
-The UI uses custom CSS to improve layout, spacing, and visual appeal. This includes styled containers, a dark theme, and enhanced readability.
+A time-series visualisation of daily Pink Morsel sales.
+The chart includes:
 
-Run the application locally using:
+* Chronological sorting
+* A vertical marker indicating the price increase on 15 January 2021
+* Custom CSS styling for a more polished layout
 
-Bash
+To run the application locally:
 
+```bash
 python app.py
-The app will be hosted at: http://127.0.0.1:8050/
+```
 
-Testing
-A test suite (test_app.py) validates the core components of the Dash application. The suite checks that:
+Then open the browser at:
 
-The header is rendered.
+```
+http://127.0.0.1:8050/
+```
 
-The line chart element is present.
+---
 
-The region picker (radio buttons) appears in the layout.
+## Test Suite
 
-All tests are written using Pytest and Dash’s dash_duo testing fixture.
+The project includes a Pytest test suite (`test_app.py`) to verify that:
 
-Run tests locally with:
+1. The header renders correctly
+2. The line chart is present
+3. The region picker is visible
 
-Bash
+Tests use Dash’s built-in `dash_duo` fixture.
 
+Run tests with:
+
+```bash
 pytest -v
-Continuous Integration (GitHub Actions)
-A CI workflow is provided at .github/workflows/test.yml.
+```
 
-The workflow performs the following:
+---
 
-Checks out the repository.
+## Test Runner Script
 
-Sets up Python.
+A test automation script named `run_tests.sh` is included. It:
 
-Creates a virtual environment.
+1. Activates the project’s virtual environment
+2. Executes the Pytest suite
+3. Returns exit code `0` if all tests pass, otherwise `1`
 
-Installs all dependencies including testing tools.
+This makes it suitable for integration with CI tools.
 
-Runs the test runner script (run_tests.sh).
+Run it with:
 
-Passes or fails the workflow based on test results.
+```bash
+./run_tests.sh
+```
 
-This ensures that every commit and pull request is automatically validated.
+---
 
-Test Runner Script
-The file run_tests.sh is used for both local and CI-based test execution. It:
+## Continuous Integration
 
-Activates the virtual environment.
+A GitHub Actions workflow file is included at:
 
-Executes the Pytest suite.
+```
+.github/workflows/test.yml
+```
 
-Returns exit code 0 if all tests pass.
+This workflow:
 
-Returns exit code 1 if any test fails.
+* Sets up Python
+* Creates a virtual environment
+* Installs dependencies
+* Runs the test automation script
+* Reports pass/fail status on every push and pull request
 
-This makes the project CI-compatible and portable.
+This ensures that the project remains stable as changes are introduced.
 
-Installation Instructions
-1. Clone the repository
-Bash
+---
 
-git clone <your-repo-url>
+## Installation
+
+Clone the repository and enter the project folder:
+
+```bash
+git clone <repository-url>
 cd <project-directory>
-2. Create and activate a virtual environment
-Bash
+```
 
+Create and activate a virtual environment:
+
+```bash
 python -m venv venv
 source venv/bin/activate
-# On Windows use: venv\Scripts\activate
-3. Install dependencies
-Bash
+```
 
+Install dependencies:
+
+```bash
 pip install -r requirements.txt
-Usage
-Running the Visualiser
-Bash
+```
 
+---
+
+## Running the Application
+
+Start the Dash app:
+
+```bash
 python app.py
-Then open the browser at: http://127.0.0.1:8050/
+```
 
-Running Tests
+Open in a browser:
+
+```
+http://127.0.0.1:8050/
+```
+
+---
+
+## Running Tests
+
 Via Pytest:
 
-Bash
-
+```bash
 pytest -v
+```
+
 Via the test script:
 
-Bash
-
+```bash
 ./run_tests.sh
-Continuous Integration
-All tests run automatically on GitHub Actions when code is pushed or a pull request is opened. Results can be viewed in the repository’s "Actions" tab.
+```
+
+
