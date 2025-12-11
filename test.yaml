@@ -1,0 +1,44 @@
+name: Test Suite
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Check out the repo
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      # 2. Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      # 3. Create and activate virtualenv, install dependencies
+      - name: Install dependencies
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip install --upgrade pip
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          fi
+          # Ensure testing deps are available even if not in requirements.txt
+          pip install pytest "dash[testing]" plotly
+
+      # 4. Make sure our test runner script is executable
+      - name: Make test script executable
+        run: chmod +x run_tests.sh
+
+      # 5. Run tests (this will exit 0 or 1 as per your script)
+      - name: Run test suite
+        run: |
+          source venv/bin/activate
+          ./run_tests.sh
